@@ -1,4 +1,5 @@
 import React, {useEffect, useRef, useState} from 'react';
+import {usePrevious} from '../functions/usePrevious.js';
 
 function Todo(props)
 {
@@ -25,14 +26,6 @@ function Todo(props)
         e.preventDefault();
         props.editTask(props.id, setName);
         setEditing(false);
-    }
-
-    function usePrevious(value) {
-        const ref = useRef();
-        useEffect(() => {
-            ref.current = value;
-        });
-        return ref.current;
     }
 
     const editingTemplate = (

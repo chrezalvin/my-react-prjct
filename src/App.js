@@ -2,6 +2,7 @@ import Todo from './components/Todo.js';
 import Form from './components/Form.js';
 import FilterButton from './components/FilterButton.js';
 import React, {useEffect, useRef, useState} from 'react';
+import {usePrevious} from './functions/usePrevious';
 import {nanoid} from 'nanoid';
 
 const FILTER_MAP = {
@@ -60,14 +61,6 @@ function App(props)
       setFilter = {setFilter}
     />
   ));
-
-  function usePrevious(value) {
-    const ref = useRef();
-    useEffect(() => {
-      ref.current = value;
-    });
-    return ref.current;
-  }
 
   /**
    * @param {String} name 
