@@ -14,12 +14,31 @@ const FILTER_NAMES = Object.keys(FILTER_MAP);
 
 function App(props)
 {
-  const taskHeadingRef = useRef(null);
-
   const [tasks, setTasks] = useState(props.tasks);
-  const taskNoun = tasks.length > 1 ? 'tasks' : 'task';
-  const handlingTask = `${tasks.length} ${taskNoun} remaining`;
   const [filter, setFilter] = useState('All');
+
+  const taskHeadingRef = useRef(null);
+  const taskFoundRef = useRef(null);
+
+  // Tasks To Be Done
+  function taskTBD(){
+    let length = tasks.filter(FILTER_MAP["Active"]).length;
+    const taskNoun = length != 1 ? 'tasks' : 'task';
+    if(length != 0)
+      return `${length} ${taskNoun} to be done`;
+    
+    return "All tasks are completed!"
+  }
+
+  // Tasks Founded
+  function taskFound(filter){
+    let length = tasks.filter(FILTER_MAP[filter]).length;
+    const taskNoun = length != 1 ? 'tasks' : 'task';
+    if(length != 0)
+      return `${length} ${taskNoun} found at ${filter} section`;
+  
+    return `No task found at ${filter} section`;
+  }
 
   const taskList = tasks.filter(FILTER_MAP[filter]).map(task => (
     <Todo 
@@ -94,10 +113,13 @@ function App(props)
   }
 
   const prevTaskLength = usePrevious(tasks.length);
+  const prevFilter = usePrevious(filter);
   useEffect(()=>{
     if(tasks.length - prevTaskLength === -1)
       taskHeadingRef.current.focus();
-  }, [tasks.length]);
+    if(prevFilter != filter)
+      taskFoundRef.current.focus();
+  }, [tasks.length, filter]);
 
   return (
     <div className="todoapp stack-large">
@@ -106,9 +128,12 @@ function App(props)
       <div className="filters btn-group stack-exception">
         {filterList}
       </div>
-      <h2 id="list-heading" tabIndex="-1" ref={taskHeadingRef}>
-        {handlingTask}
+      <h2 tabIndex="-1" ref={taskFoundRef}>
+      {taskFound(filter)}
       </h2>
+      <h3 id="list-heading" tabIndex="-1" ref={taskHeadingRef}>
+      {taskTBD()}
+      </h3>
       <ul
         role="list"
         className="todo-list stack-large stack-exception"
