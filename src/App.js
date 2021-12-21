@@ -24,8 +24,8 @@ function App(props)
   // Tasks To Be Done
   function taskTBD(){
     let length = tasks.filter(FILTER_MAP["Active"]).length;
-    const taskNoun = length != 1 ? 'tasks' : 'task';
-    if(length != 0)
+    const taskNoun = (length !== 1) ? 'tasks' : 'task';
+    if(length !== 0)
       return `${length} ${taskNoun} to be done`;
     
     return "All tasks are completed!"
@@ -34,8 +34,8 @@ function App(props)
   // Tasks Founded
   function taskFound(filter){
     let length = tasks.filter(FILTER_MAP[filter]).length;
-    const taskNoun = length != 1 ? 'tasks' : 'task';
-    if(length != 0)
+    const taskNoun = (length !== 1) ? 'tasks' : 'task';
+    if(length !== 0)
       return `${length} ${taskNoun} found at ${filter} section`;
   
     return `No task found at ${filter} section`;
@@ -96,7 +96,7 @@ function App(props)
   function toggleTaskCompleted(id)
   {
     const updatedTasks = tasks.map(task => {
-      if(task.id == id)
+      if(task.id === id)
         return {...task, completed: !task.completed};
 
       return task;
@@ -110,7 +110,7 @@ function App(props)
   useEffect(()=>{
     if(tasks.length - prevTaskLength === -1)
       taskHeadingRef.current.focus();
-    if(prevFilter != filter)
+    if(prevFilter !== filter)
       taskFoundRef.current.focus();
   }, [tasks.length, filter]);
 
